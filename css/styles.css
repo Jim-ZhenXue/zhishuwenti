@@ -1,0 +1,475 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: #f0fdf4;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 标签页样式 */
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 16px;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab {
+    padding: 8px 16px;
+    background-color: #e5e7eb;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.tab.active {
+    background-color: #10b981;
+    color: white;
+}
+
+.info-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #4b5563;
+}
+
+.info-button:hover {
+    background-color: #f3f4f6;
+}
+
+/* 控制区域样式 */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.distance-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 200px;
+}
+
+input[type="range"] {
+    flex: 1;
+}
+
+#distance-value {
+    min-width: 60px;
+    font-size: 14px;
+}
+
+.reset-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.reset-button:hover {
+    background-color: #f3f4f6;
+}
+
+/* 等距离控制 */
+.spacing-control {
+    margin-bottom: 16px;
+}
+
+.spacing-control label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* 植树视图容器 */
+.planting-container {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.planting-view {
+    display: none;
+}
+
+.planting-view.active {
+    display: block;
+}
+
+/* 植树控制区域 */
+.planting-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #059669;
+}
+
+.toggle-button {
+    padding: 8px 16px;
+    border: 1px solid #10b981;
+    border-radius: 4px;
+    background-color: white;
+    color: #10b981;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.toggle-button:hover {
+    background-color: #f0fdf4;
+}
+
+/* 统计数据样式 */
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-value {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-value.green {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.stat-value.blue {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.stat-value.purple {
+    background-color: #ede9fe;
+    color: #5b21b6;
+}
+
+/* 视图区域 */
+.view-area {
+    position: relative;
+    height: 300px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 0 15px; /* 添加左右内边距，确保树木完全显示 */
+}
+
+/* 线性植树视图 */
+#linear-view {
+    position: relative;
+}
+
+.ground {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background-color: #fcd34d;
+    border-radius: 4px;
+    /* 确保地面元素与视图区域的内边距一致 */
+}
+
+.tree {
+    position: absolute;
+    bottom: 116px;
+    transform: translateX(-50%);
+    cursor: grab;
+    z-index: 1;
+    user-select: none;
+}
+
+.tree.dragging {
+    cursor: grabbing;
+    z-index: 10;
+}
+
+.tree-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    padding: 4px 8px;
+    background-color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.tree-delete {
+    position: absolute;
+    top: calc(100% + 30px); /* 调整位置到树标签下方 */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5; /* 确保删除按钮始终显示在前面 */
+}
+
+.tree-delete:hover {
+    background-color: #fecaca;
+}
+
+.distance-label {
+    position: absolute;
+    bottom: 70px;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: #dbeafe;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1e40af;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 环形植树视图 */
+#circular-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#circular-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.circular-tree {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    cursor: grab;
+}
+
+.circular-tree.dragging {
+    cursor: grabbing;
+    z-index: 10;
+}
+
+/* 公式框 */
+.formula-box {
+    background-color: #f0fdf4;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.formula-box h3 {
+    margin-bottom: 8px;
+    color: #065f46;
+    font-weight: 500;
+}
+
+.formula-box ul {
+    margin-left: 24px;
+}
+
+.formula-box li {
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #374151;
+}
+
+/* 对话框 */
+.dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog.active {
+    display: flex;
+}
+
+.dialog-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dialog-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.dialog-body {
+    padding: 16px;
+}
+
+.info-section {
+    margin-top: 16px;
+}
+
+.info-section h3 {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.info-section ul {
+    margin-left: 24px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.info-note {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: #f3f4f6;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .controls {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .distance-control {
+        width: 100%;
+    }
+    
+    .slider-container {
+        width: 100%;
+    }
+    
+    .planting-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .stats {
+        width: 100%;
+    }
+}

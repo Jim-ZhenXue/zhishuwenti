@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>植树问题模拟</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="tabs">
+                <button id="linear-tab" class="tab active" onclick="switchPlantingType('linear')">直线植树</button>
+                <button id="circular-tab" class="tab" onclick="switchPlantingType('circular')">环形植树</button>
+                <button id="info-button" class="info-button" onclick="showInfoDialog()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                </button>
+            </div>
+            
+            <div class="controls">
+                <div class="distance-control">
+                    <span class="label">总<span id="distance-label">长度</span>：</span>
+                    <div class="slider-container">
+                        <input type="range" id="total-distance" min="50" max="500" step="10" value="200" oninput="handleDistanceChange()">
+                        <span id="distance-value">200米</span>
+                    </div>
+                </div>
+                
+                <button id="reset-button" class="reset-button" onclick="resetSimulation()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                    重置
+                </button>
+            </div>
+        </header>
+        
+        <div class="spacing-control">
+            <label>
+                <input type="checkbox" id="equal-spacing" checked>
+                等距离种植
+            </label>
+        </div>
+        
+        <div class="planting-container">
+            <!-- 线性植树视图 -->
+            <div id="linear-planting" class="planting-view active">
+                <div class="planting-controls">
+                    <button id="add-linear-tree" class="add-button" onclick="addLinearTree()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                        添加树
+                    </button>
+                    <button id="toggle-linear-distances" class="toggle-button" onclick="toggleLinearDistances()">
+                        隐藏距离
+                    </button>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">树木数量:</span>
+                            <span id="linear-tree-count" class="stat-value green">2棵</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">间隔数量:</span>
+                            <span id="linear-interval-count" class="stat-value blue">1个</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">平均间隔距离:</span>
+                            <span id="linear-avg-distance" class="stat-value purple">200米</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="linear-view" class="view-area">
+                    <!-- 这里将通过JavaScript动态生成树木和地面 -->
+                </div>
+                
+                <div class="formula-box">
+                    <h3>植树问题公式：</h3>
+                    <ul>
+                        <li><strong>两端都种树</strong>：树的数量 = 间隔数 + 1 → <span id="linear-formula-1">1 + 1 = 2</span></li>
+                        <li><strong>间隔数</strong>：间隔数 = 树的数量 - 1 → <span id="linear-formula-2">2 - 1 = 1</span></li>
+                        <li><strong>间隔距离</strong>：间隔距离 = 总距离 ÷ 间隔数 → <span id="linear-formula-3">200 ÷ 1 = 200</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 环形植树视图 -->
+            <div id="circular-planting" class="planting-view">
+                <div class="planting-controls">
+                    <button id="add-circular-tree" class="add-button" onclick="addCircularTree()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                        添加树
+                    </button>
+                    <button id="toggle-circular-distances" class="toggle-button" onclick="toggleCircularDistances()">
+                        隐藏距离
+                    </button>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">树木数量:</span>
+                            <span id="circular-tree-count" class="stat-value green">4棵</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">间隔数量:</span>
+                            <span id="circular-interval-count" class="stat-value blue">4个</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">平均间隔距离:</span>
+                            <span id="circular-avg-distance" class="stat-value purple">50米</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="circular-view" class="view-area">
+                    <canvas id="circular-canvas"></canvas>
+                    <!-- 树木将通过JavaScript动态添加 -->
+                </div>
+                
+                <div class="formula-box">
+                    <h3>环形植树问题公式：</h3>
+                    <ul>
+                        <li><strong>树的数量 = 间隔数</strong>：<span id="circular-formula-1">4 = 4</span></li>
+                        <li><strong>间隔距离</strong>：间隔距离 = 总周长 ÷ 树的数量 → <span id="circular-formula-2">200 ÷ 4 = 50米</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 信息对话框 -->
+    <div id="info-dialog" class="dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h2>植树问题说明</h2>
+                <button id="close-dialog" class="close-button" onclick="hideInfoDialog()">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <p>植树问题是小学数学中的经典问题，涉及到树木数量、间隔数量和间隔距离之间的关系。</p>
+                
+                <div class="info-section">
+                    <h3>直线植树：</h3>
+                    <ul>
+                        <li>两端都种树时：树的数量 = 间隔数 + 1</li>
+                        <li>两端都不种树时：树的数量 = 间隔数 - 1</li>
+                        <li>间隔距离 = 总距离 ÷ 间隔数</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>环形植树：</h3>
+                    <ul>
+                        <li>树的数量 = 间隔数</li>
+                        <li>间隔距离 = 总周长 ÷ 树的数量</li>
+                    </ul>
+                </div>
+                
+                <div class="info-note">
+                    <p>在这个互动模拟中，你可以通过拖放来种植树木，或者使用控制面板调整参数。尝试不同的配置，观察树木数量、间隔数量和间隔距离之间的关系。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/linear-tree.js"></script>
+    <script src="js/circular-tree.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
