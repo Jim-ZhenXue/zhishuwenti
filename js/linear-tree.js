@@ -10,7 +10,11 @@ function redistributeLinearTrees() {
     
     // 计算中间树的数量和间距（考虑到起点和终点的新位置）
     const innerTreeCount = linearTrees.length - 2;
-    const step = (98 - 2) / (innerTreeCount + 1);
+    
+    // 在等距离模式下，确保每个间隔的实际距离相等
+    // 每个间隔应该是总距离除以间隔数
+    const intervalCount = linearTrees.length - 1;
+    const equalDistance = totalDistance / intervalCount;
     
     // 创建新的树数组
     const newTrees = [startTree];
@@ -18,7 +22,11 @@ function redistributeLinearTrees() {
     // 添加中间的树
     for (let i = 0; i < innerTreeCount; i++) {
         const innerTreeId = linearTrees.filter(t => t.id !== startTree.id && t.id !== endTree.id)[i]?.id || (nextLinearTreeId + i);
-        newTrees.push({ id: innerTreeId, position: step * (i + 1) });
+        
+        // 根据等距离计算位置
+        // 在视觉上，我们仍然使用2%到98%的范围，但确保每个间隔在计算时是相等的
+        const step = (98 - 2) / intervalCount;
+        newTrees.push({ id: innerTreeId, position: 2 + step * (i + 1) });
     }
     
     // 添加终点树
@@ -113,11 +121,42 @@ function renderLinearTrees() {
     
     // 渲染距离标签
     if (showLinearDistances) {
+        // Calculate the total percentage span of all trees
+        const firstTree = sortedTrees[0];
+        const lastTree = sortedTrees[sortedTrees.length - 1];
+        const totalSpan = lastTree.position - firstTree.position;
+        
+        // Calculate the sum of all distances to ensure it equals totalDistance
+        let totalDistanceSum = 0;
+        
         for (let i = 0; i < sortedTrees.length - 1; i++) {
             const currentTree = sortedTrees[i];
             const nextTree = sortedTrees[i + 1];
             const midPosition = (currentTree.position + nextTree.position) / 2;
-            const distance = ((nextTree.position - currentTree.position) / 100) * totalDistance;
+            
+            // Calculate distance based on tree positions
+            let distance;
+            if (sortedTrees.length === 2) {
+                // When there are only 2 trees, the distance is exactly equal to the total distance
+                distance = totalDistance;
+            } else if (equalSpacing) {
+                // In equal spacing mode, all distances are exactly equal
+                distance = Math.round((totalDistance / (sortedTrees.length - 1)) * 10) / 10;
+            } else {
+                // In non-equal spacing mode, calculate proportionally
+                const intervalSpan = nextTree.position - currentTree.position;
+                const proportion = intervalSpan / totalSpan;
+                
+                // Calculate the distance for this interval
+                distance = Math.round(proportion * totalDistance * 10) / 10;
+                
+                // For the last interval, ensure the sum equals totalDistance
+                if (i === sortedTrees.length - 2) {
+                    distance = Math.round((totalDistance - totalDistanceSum) * 10) / 10;
+                } else {
+                    totalDistanceSum += distance;
+                }
+            }
             
             const distanceLabel = document.createElement('div');
             distanceLabel.className = 'distance-label';
@@ -262,7 +301,26 @@ function toggleLinearDistances() {
 function updateLinearStats() {
     const treeCount = linearTrees.length;
     const intervalCount = Math.max(1, treeCount - 1); // 确保至少有一个间隔
-    const avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+    
+    // Calculate the average distance
+    let avgDistance;
+    if (treeCount === 2) {
+        // When there are exactly 2 trees, the distance is exactly equal to the total distance
+        avgDistance = totalDistance;
+    } else {
+        // For more than 2 trees, the average is the total distance divided by the number of intervals
+        avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+    }
+    
+    // Update the formula display to show that the sum of all intervals equals the total distance
+    const formula3 = document.getElementById('linear-formula-3');
+    if (formula3) {
+        if (treeCount === 2) {
+            formula3.textContent = `${totalDistance} ÷ ${intervalCount} = ${avgDistance}`;
+        } else if (treeCount > 2) {
+            formula3.textContent = `${totalDistance} ÷ ${intervalCount} = ${avgDistance} (总和 = ${totalDistance}米)`;
+        }
+    }
     
     linearTreeCount.textContent = `${treeCount}棵`;
     linearIntervalCount.textContent = `${intervalCount}个`;

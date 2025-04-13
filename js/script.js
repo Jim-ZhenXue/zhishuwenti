@@ -205,7 +205,15 @@ function handleDistanceChange() {
     if (plantingType === 'linear') {
         const treeCount = linearTrees.length;
         const intervalCount = Math.max(1, treeCount - 1);
-        const avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+        
+        // When there are exactly 2 trees, the average distance is exactly the total distance
+        let avgDistance;
+        if (treeCount === 2) {
+            avgDistance = totalDistance;
+        } else {
+            avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+        }
+        
         document.getElementById('linear-avg-distance').textContent = `${avgDistance}米`;
     } else {
         const treeCount = circularTrees.length;
