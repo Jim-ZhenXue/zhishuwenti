@@ -174,21 +174,7 @@ function renderCircularView() {
     ctx.lineWidth = 8;
     ctx.stroke();
     
-    // 绘制刻度
-    for (let i = 0; i < 12; i++) {
-        const angle = (i * 30 * Math.PI) / 180;
-        const startX = centerX + (pixelRadius - 5) * Math.cos(angle);
-        const startY = centerY + (pixelRadius - 5) * Math.sin(angle);
-        const endX = centerX + (pixelRadius + 5) * Math.cos(angle);
-        const endY = centerY + (pixelRadius + 5) * Math.sin(angle);
-        
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = "#78350F"; // amber-900
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    }
+    // 移除刻度标记，使黄色圈连续
     
     // 清除现有的树元素
     const existingTrees = circularView.querySelectorAll('.circular-tree');
