@@ -135,13 +135,10 @@ input[type="range"] {
     cursor: pointer;
 }
 
-/* 植树视图容器 */
+/* 移除层叠的容器样式，直接使用大背景 */
 .planting-container {
-    background-color: black;
-    border-radius: 8px;
-    border: 1px solid #333333;
+    /* 移除背景色、边框和阴影 */
     padding: 16px;
-    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
 }
 
 .planting-view {
@@ -269,7 +266,7 @@ input[type="range"] {
     height: 500px;
     margin-bottom: 16px;
     border-radius: 4px;
-    overflow: hidden;
+    /* 移除 overflow: hidden 属性，防止元素被截断 */
     padding: 0 15px; /* 添加左右内边距，确保树木完全显示 */
 }
 
@@ -278,16 +275,7 @@ input[type="range"] {
     position: relative;
 }
 
-.ground {
-    position: absolute;
-    bottom: 100px;
-    left: 0;
-    width: 100%;
-    height: 16px;
-    background-color: #fcd34d;
-    border-radius: 4px;
-    /* 确保地面元素与视图区域的内边距一致 */
-}
+/* 移除黄色线条样式 */
 
 .tree {
     position: absolute;

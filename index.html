@@ -47,14 +47,7 @@
                         隐藏距离
                     </button>
                     
-                    <div class="planting-mode-selector">
-                        <span class="mode-label">种植模式:</span>
-                        <select id="linear-planting-mode" onchange="changePlantingMode(this.value)">
-                            <option value="both-ends">两端植树</option>
-                            <option value="one-end">一端植树</option>
-                            <option value="no-ends">两端不植树</option>
-                        </select>
-                    </div>
+                    <!-- 移除种植模式选择器，只保留两端植树模式 -->
                     
                     <div class="stats">
                         <div class="stat">
@@ -130,7 +123,6 @@
                     <h3>直线植树：</h3>
                     <ul>
                         <li>两端都种树时：树的数量 = 间隔数 + 1</li>
-                        <li>两端都不种树时：树的数量 = 间隔数 - 1</li>
                         <li>间隔距离 = 总距离 ÷ 间隔数</li>
                     </ul>
                 </div>

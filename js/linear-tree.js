@@ -4,18 +4,8 @@
 function redistributeLinearTrees() {
     if (linearTrees.length <= 1) return;
     
-    // 根据不同的种植模式处理
-    switch (plantingMode) {
-        case 'both-ends':
-            redistributeBothEnds();
-            break;
-        case 'one-end':
-            redistributeOneEnd();
-            break;
-        case 'no-ends':
-            redistributeNoEnds();
-            break;
-    }
+    // 只保留两端植树模式
+    redistributeBothEnds();
     
     // 重新渲染
     renderLinearTrees();
@@ -62,63 +52,7 @@ function redistributeBothEnds() {
     linearTrees = newTrees;
 }
 
-// 只在一端种树的情况
-function redistributeOneEnd() {
-    if (linearTrees.length <= 1) return;
-    
-    // 保留起点，但确保它在视图范围内（2%位置）
-    const startTree = { id: linearTrees[0].id, position: 2 };
-    
-    // 在一端种树的情况下，间隔数 = 树的数量
-    const intervalCount = linearTrees.length;
-    
-    // 使用从 2% 到 98% 的可见范围
-    const visibleRange = 98 - 2;
-    
-    // 计算每个间隔占的百分比
-    const intervalPercent = visibleRange / intervalCount;
-    
-    // 创建新的树数组
-    const newTrees = [startTree]; // 起点树在 2% 位置
-    
-    // 添加其他树，每棵树的位置应该在每个间隔的结束处
-    const otherTreeCount = linearTrees.length - 1;
-    for (let i = 0; i < otherTreeCount; i++) {
-        const treeId = linearTrees.filter(t => t.id !== startTree.id)[i]?.id || (nextLinearTreeId + i);
-        // 每棵树的位置应该是 (i+1) 个间隔的结束位置
-        // 例如，如果有 3 个间隔，树应该在 2%，35.3% 和 68.6% 的位置
-        newTrees.push({ id: treeId, position: 2 + intervalPercent * (i + 1) });
-    }
-    
-    // 更新树数组
-    linearTrees = newTrees;
-}
-
-// 两端都不种树的情况
-function redistributeNoEnds() {
-    // 计算树的间距
-    const treeCount = linearTrees.length;
-    
-    // 在两端不种树的情况下，间隔数 = 树的数量 + 1
-    const intervalCount = treeCount + 1;
-    
-    // 计算每个间隔占的百分比
-    const intervalPercent = 100 / intervalCount;
-    
-    // 创建新的树数组
-    const newTrees = [];
-    
-    // 添加所有树，每棵树的位置应该在每个间隔的结束处，除了最后一个间隔
-    for (let i = 0; i < treeCount; i++) {
-        const treeId = linearTrees[i]?.id || (nextLinearTreeId + i);
-        // 每棵树的位置应该是 (i+1) 个间隔的结束位置
-        // 例如，如果有 3 个间隔，树应该在 33.3% 和 66.6% 的位置
-        newTrees.push({ id: treeId, position: intervalPercent * (i + 1) });
-    }
-    
-    // 更新树数组
-    linearTrees = newTrees;
-}
+// 移除其他种植模式函数，只保留两端植树模式
 
 // 渲染线性树
 function renderLinearTrees() {
@@ -458,25 +392,9 @@ function toggleLinearDistances() {
 // 更新线性植树统计
 function updateLinearStats() {
     const treeCount = linearTrees.length;
-    let intervalCount;
     
-    // 根据不同的种植模式计算间隔数
-    switch (plantingMode) {
-        case 'both-ends':
-            // 两端都种树时：间隔数 = 树的数量 - 1
-            intervalCount = Math.max(1, treeCount - 1);
-            break;
-        case 'one-end':
-            // 只在一端种树时：间隔数 = 树的数量
-            intervalCount = treeCount;
-            break;
-        case 'no-ends':
-            // 两端都不种树时：间隔数 = 树的数量 + 1
-            intervalCount = treeCount + 1;
-            break;
-        default:
-            intervalCount = Math.max(1, treeCount - 1);
-    }
+    // 只保留两端植树模式：间隔数 = 树的数量 - 1
+    const intervalCount = Math.max(1, treeCount - 1);
     
     // 计算平均距离
     const avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
