@@ -228,8 +228,7 @@ function renderCircularView() {
                 <polygon points="15,15 7,33 23,33" fill="#3CB371" stroke-width="0"></polygon>
                 <polygon points="15,10 9,25 21,25" fill="#90EE90" stroke-width="0"></polygon>
             </svg>
-            <div style="position: absolute; top: ${relativeLabelY}px; left: ${relativeLabelX}px; background-color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); transform: translate(-50%, -50%);">
-                ${index + 1}
+            <div style="position: absolute; top: ${relativeLabelY}px; left: ${relativeLabelX}px; background-color: black; border-radius: 12px; width: auto; height: 24px; padding: 0 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #dddddd; box-shadow: 0 1px 2px rgba(255, 255, 255, 0.1); transform: translate(-50%, -50%);"><span style="white-space: nowrap;">树 ${index + 1}</span>
             </div>
         `;
         
