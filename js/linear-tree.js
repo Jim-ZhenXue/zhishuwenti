@@ -169,7 +169,7 @@ function renderLinearTrees() {
             // 计算左边界与第一棵树干之间的中点
             // 树干在SVG中的中心位置是x=15
             leftLabel.style.left = `${(0 + firstTree.position) / 2}%`;
-            leftLabel.textContent = `${avgDistance}`;
+            leftLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(leftLabel);
             
             // 树之间的距离标签
@@ -185,7 +185,7 @@ function renderLinearTrees() {
                 distanceLabel.style.position = 'absolute';
                 // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
-                distanceLabel.textContent = `${avgDistance}`;
+                distanceLabel.textContent = `${avgDistance}米`;
                 
                 linearView.appendChild(distanceLabel);
             }
@@ -197,7 +197,7 @@ function renderLinearTrees() {
             // 计算最后一棵树干与右边界之间的中点
             // 树干在SVG中的中心位置是x=15
             rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
-            rightLabel.textContent = `${avgDistance}`;
+            rightLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(rightLabel);
             
         } else if (plantingMode === 'one-end') {
@@ -216,7 +216,7 @@ function renderLinearTrees() {
                 distanceLabel.style.position = 'absolute';
                 // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
-                distanceLabel.textContent = `${avgDistance}`;
+                distanceLabel.textContent = `${avgDistance}米`;
                 
                 linearView.appendChild(distanceLabel);
             }
@@ -228,7 +228,7 @@ function renderLinearTrees() {
             // 计算最后一棵树干与右边界之间的中点
             // 树干在SVG中的中心位置是x=15
             rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
-            rightLabel.textContent = `${avgDistance}`;
+            rightLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(rightLabel);
             
         } else {
@@ -245,7 +245,7 @@ function renderLinearTrees() {
                 distanceLabel.style.position = 'absolute';
                 // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
-                distanceLabel.textContent = `${avgDistance}`;
+                distanceLabel.textContent = `${avgDistance}米`;
                 
                 linearView.appendChild(distanceLabel);
             }
@@ -426,10 +426,10 @@ function updateLinearStats() {
     // 更新统计显示
     linearTreeCount.textContent = `${treeCount}棵`;
     linearIntervalCount.textContent = `${intervalCount}个`;
-    linearAvgDistance.textContent = `${avgDistance}`;
+    linearAvgDistance.textContent = `${avgDistance}米`;
     
     // 直接更新平均间隔距离的显示
-    document.getElementById('linear-avg-distance').textContent = `${avgDistance}`;
+    document.getElementById('linear-avg-distance').textContent = `${avgDistance}米`;
     
     console.log('Updated linear stats:', { totalDistance, treeCount, intervalCount, avgDistance, plantingMode });
 }
