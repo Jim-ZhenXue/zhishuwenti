@@ -184,10 +184,19 @@ input[type="range"] {
     color: #10b981;
     font-weight: 500;
     cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s ease;
 }
 
 .toggle-button:hover {
-    background-color: #f0fdf4;
+    background-color: rgba(240, 253, 244, 0.1);
+    color: #10b981;
+}
+
+.toggle-button:focus {
+    outline: none;
+    background-color: #222222;
+    color: #10b981;
 }
 
 /* 种植模式选择器 */

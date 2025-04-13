@@ -399,6 +399,9 @@ function toggleCircularDistances() {
     const button = document.getElementById('toggle-circular-distances');
     button.textContent = showCircularDistances ? '隐藏距离' : '显示距离';
     
+    // 按钮点击后自动失去焦点，避免保持白底状态
+    button.blur();
+    
     // 隐藏或显示间隔距离统计
     const avgDistanceStat = document.getElementById('circular-avg-distance').closest('.stat');
     if (avgDistanceStat) {
