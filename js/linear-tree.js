@@ -279,24 +279,13 @@ function updateLinearStats() {
         avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
     }
     
-    // Update the formula display to show that the sum of all intervals equals the total distance
-    const formula3 = document.getElementById('linear-formula-3');
-    if (formula3) {
-        if (treeCount === 2) {
-            formula3.textContent = `${totalDistance} ÷ ${intervalCount} = ${avgDistance}`;
-        } else if (treeCount > 2) {
-            formula3.textContent = `${totalDistance} ÷ ${intervalCount} = ${avgDistance} (总和 = ${totalDistance}米)`;
-        }
-    }
+
     
     linearTreeCount.textContent = `${treeCount}棵`;
     linearIntervalCount.textContent = `${intervalCount}个`;
     linearAvgDistance.textContent = `${avgDistance}米`;
     
-    // 更新公式
-    linearFormula1.textContent = `${intervalCount} + 1 = ${intervalCount + 1}`;
-    linearFormula2.textContent = `${treeCount} - 1 = ${treeCount - 1}`;
-    linearFormula3.textContent = `${totalDistance} ÷ ${intervalCount} = ${avgDistance}`;
+
     
     // 直接更新平均间隔距离的显示
     document.getElementById('linear-avg-distance').textContent = `${avgDistance}米`;

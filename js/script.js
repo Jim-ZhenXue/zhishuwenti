@@ -48,11 +48,7 @@ const linearAvgDistance = document.getElementById('linear-avg-distance');
 const circularTreeCount = document.getElementById('circular-tree-count');
 const circularIntervalCount = document.getElementById('circular-interval-count');
 const circularAvgDistance = document.getElementById('circular-avg-distance');
-const linearFormula1 = document.getElementById('linear-formula-1');
-const linearFormula2 = document.getElementById('linear-formula-2');
-const linearFormula3 = document.getElementById('linear-formula-3');
-const circularFormula1 = document.getElementById('circular-formula-1');
-const circularFormula2 = document.getElementById('circular-formula-2');
+
 const infoButton = document.getElementById('info-button');
 const infoDialog = document.getElementById('info-dialog');
 const closeDialogButton = document.getElementById('close-dialog');

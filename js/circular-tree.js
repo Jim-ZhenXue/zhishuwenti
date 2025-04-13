@@ -420,9 +420,7 @@ function updateCircularStats() {
     circularIntervalCount.textContent = `${intervalCount}个`;
     circularAvgDistance.textContent = `${avgDistance}米`;
     
-    // 更新公式显示
-    circularFormula1.textContent = `${treeCount} = ${intervalCount}`;
-    circularFormula2.textContent = `${totalDistance} ÷ ${treeCount} = ${avgDistance}米`;
+
     
     // 更新平均间隔距离的显示
     document.getElementById('circular-avg-distance').textContent = `${avgDistance}米`;
