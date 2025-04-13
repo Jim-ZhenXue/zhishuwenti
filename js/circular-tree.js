@@ -235,7 +235,7 @@ function renderCircularView() {
         // 添加删除按钮（如果树的数量大于2），放在圆的内侧
         if (circularTrees.length > 2) {
             // 计算删除按钮的位置（在圆的内侧）
-            const deleteDistance = 20; // 向内的距离
+            const deleteDistance = 30; // 向内的距离（增加50%）
             const deleteAngleRad = (tree.angle * Math.PI) / 180;
             const innerRadius = pixelRadius - deleteDistance;
             const deleteX = Math.cos(deleteAngleRad) * innerRadius - pixelRadius * Math.cos(deleteAngleRad);
@@ -403,6 +403,13 @@ function toggleCircularDistances() {
     // 更新按钮文本
     const button = document.getElementById('toggle-circular-distances');
     button.textContent = showCircularDistances ? '隐藏距离' : '显示距离';
+    
+    // 隐藏或显示平均间隔距离统计
+    const avgDistanceStat = document.getElementById('circular-avg-distance').closest('.stat');
+    if (avgDistanceStat) {
+        avgDistanceStat.style.display = showCircularDistances ? 'flex' : 'none';
+    }
+    
     renderCircularView();
     console.log('Toggled circular distances:', showCircularDistances);
 }

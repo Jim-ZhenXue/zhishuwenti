@@ -260,6 +260,13 @@ function toggleLinearDistances() {
     // 更新按钮文本
     const button = document.getElementById('toggle-linear-distances');
     button.textContent = showLinearDistances ? '隐藏距离' : '显示距离';
+    
+    // 隐藏或显示平均间隔距离统计
+    const avgDistanceStat = document.getElementById('linear-avg-distance').closest('.stat');
+    if (avgDistanceStat) {
+        avgDistanceStat.style.display = showLinearDistances ? 'flex' : 'none';
+    }
+    
     renderLinearTrees();
     console.log('Toggled linear distances:', showLinearDistances);
 }
