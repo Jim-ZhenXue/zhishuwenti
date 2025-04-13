@@ -375,11 +375,10 @@ input[type="range"] {
     position: absolute;
     bottom: 120px;
     left: 50%; /* 确保使用百分比定位 */
-    transform: translateX(-50%); /* 确保水平居中 */
-    padding: 4px 12px; /* 增加水平内边距，使形状更加椭圆 */
+    padding: 2px 6px; /* 减小内边距，使标签缩小 */
     background-color: #dbeafe;
-    border-radius: 20px; /* 增大圆角半径，形成椭圆形状 */
-    font-size: 12px;
+    border-radius: 10px; /* 减小圆角半径 */
+    font-size: 10px; /* 减小字体大小 */
     font-weight: 500;
     color: #1e40af;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -387,6 +386,7 @@ input[type="range"] {
     white-space: nowrap; /* 防止文本换行 */
     margin-left: 0 !important; /* 清除可能的左边距 */
     margin-right: 0 !important; /* 清除可能的右边距 */
+    transform: translateX(-50%) scale(0.85); /* 水平居中并缩放 */
 }
 
 /* 环形植树视图 */
