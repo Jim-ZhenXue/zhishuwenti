@@ -78,7 +78,7 @@ header {
 }
 
 .tab.active {
-    background-color: #10b981;
+    background-color: #3b82f6; /* 从绿色(#10b981)改为蓝色(#3b82f6) */
     color: white;
 }
 
