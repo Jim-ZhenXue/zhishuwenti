@@ -11,7 +11,7 @@ function redistributeLinearTrees() {
     // 计算中间树的数量和间距（考虑到起点和终点的新位置）
     const innerTreeCount = linearTrees.length - 2;
     
-    // 在等距离模式下，确保每个间隔的实际距离相等
+    // 确保每个间隔的实际距离相等
     // 每个间隔应该是总距离除以间隔数
     const intervalCount = linearTrees.length - 1;
     const equalDistance = totalDistance / intervalCount;
@@ -111,7 +111,7 @@ function renderLinearTrees() {
         
         // 添加拖拽事件
         treeElement.addEventListener('mousedown', (e) => {
-            if (tree.id !== 1 && tree.id !== 2 && !equalSpacing) {
+            if (false) { // 不再允许拖拽任何树
                 startDraggingLinearTree(e, tree.id);
             }
         });
@@ -139,23 +139,9 @@ function renderLinearTrees() {
             if (sortedTrees.length === 2) {
                 // When there are only 2 trees, the distance is exactly equal to the total distance
                 distance = totalDistance;
-            } else if (equalSpacing) {
-                // In equal spacing mode, all distances are exactly equal
-                distance = Math.round((totalDistance / (sortedTrees.length - 1)) * 10) / 10;
             } else {
-                // In non-equal spacing mode, calculate proportionally
-                const intervalSpan = nextTree.position - currentTree.position;
-                const proportion = intervalSpan / totalSpan;
-                
-                // Calculate the distance for this interval
-                distance = Math.round(proportion * totalDistance * 10) / 10;
-                
-                // For the last interval, ensure the sum equals totalDistance
-                if (i === sortedTrees.length - 2) {
-                    distance = Math.round((totalDistance - totalDistanceSum) * 10) / 10;
-                } else {
-                    totalDistanceSum += distance;
-                }
+                // Always use equal spacing
+                distance = Math.round((totalDistance / (sortedTrees.length - 1)) * 10) / 10;
             }
             
             const distanceLabel = document.createElement('div');
@@ -170,30 +156,10 @@ function renderLinearTrees() {
 
 // 添加线性树
 function addLinearTree() {
-    if (equalSpacing) {
-        // 等距离模式：添加一棵树并重新分布
-        const newId = nextLinearTreeId++;
-        linearTrees.push({ id: newId, position: 50 });
-        redistributeLinearTrees();
-    } else {
-        // 非等距离模式：找到最大间隔并在中间添加树
-        let maxGap = 0;
-        let gapPosition = 50;
-        
-        const sortedTrees = [...linearTrees].sort((a, b) => a.position - b.position);
-        
-        for (let i = 0; i < sortedTrees.length - 1; i++) {
-            const gap = sortedTrees[i + 1].position - sortedTrees[i].position;
-            if (gap > maxGap) {
-                maxGap = gap;
-                gapPosition = sortedTrees[i].position + gap / 2;
-            }
-        }
-        
-        linearTrees.push({ id: nextLinearTreeId++, position: gapPosition });
-        renderLinearTrees();
-        updateLinearStats();
-    }
+    // 添加一棵树并重新分布以保持等距离
+    const newId = nextLinearTreeId++;
+    linearTrees.push({ id: newId, position: 50 });
+    redistributeLinearTrees();
 }
 
 // 删除线性树
@@ -203,7 +169,8 @@ function removeLinearTree(id) {
     
     linearTrees = linearTrees.filter(tree => tree.id !== id);
     
-    if (equalSpacing && linearTrees.length > 2) {
+    // 总是重新分配树以保持等距离
+    if (linearTrees.length > 2) {
         redistributeLinearTrees();
     } else {
         renderLinearTrees();
@@ -231,8 +198,8 @@ function selectLinearTree(id) {
 
 // 开始拖拽线性树
 function startDraggingLinearTree(e, id) {
-    // 不能拖拽起点和终点，或者在等距离模式下
-    if (id === 1 || id === 2 || equalSpacing) return;
+    // 不允许拖拽任何树，因为我们始终使用等距离模式
+    return;
     
     e.preventDefault();
     

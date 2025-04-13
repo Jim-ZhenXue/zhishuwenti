@@ -1,7 +1,7 @@
 // 全局变量
 let plantingType = 'linear'; // 'linear' 或 'circular'
 let totalDistance = 200; // 总距离（米）
-let equalSpacing = true; // 是否等距离种植
+// Equal spacing is now always enabled by default
 
 // 线性植树变量
 let linearTrees = [
@@ -32,7 +32,7 @@ const distanceLabel = document.getElementById('distance-label');
 const totalDistanceSlider = document.getElementById('total-distance');
 const distanceValue = document.getElementById('distance-value');
 const resetButton = document.getElementById('reset-button');
-const equalSpacingCheckbox = document.getElementById('equal-spacing');
+
 const linearPlanting = document.getElementById('linear-planting');
 const circularPlanting = document.getElementById('circular-planting');
 const linearView = document.getElementById('linear-view');
@@ -110,10 +110,8 @@ function setupEventListeners() {
                     renderCircularView();
                 }
                 
-                // 如果是等距离模式，还需要重新分配树的位置
-                if (equalSpacing) {
-                    redistributeTrees();
-                }
+                // 总是重新分配树的位置以保持等距离
+                redistributeTrees();
                 
                 window.sliderAnimationFrame = null;
             });
@@ -123,13 +121,7 @@ function setupEventListeners() {
     // 重置按钮
     resetButton.addEventListener('click', resetSimulation);
     
-    // 等距离种植复选框
-    equalSpacingCheckbox.addEventListener('change', () => {
-        equalSpacing = equalSpacingCheckbox.checked;
-        if (equalSpacing) {
-            redistributeTrees();
-        }
-    });
+
     
     // 添加树按钮
     addLinearTreeButton.addEventListener('click', addLinearTree);
@@ -231,8 +223,7 @@ function resetSimulation() {
     totalDistanceSlider.value = 200;
     distanceValue.textContent = '200米';
     
-    equalSpacing = true;
-    equalSpacingCheckbox.checked = true;
+
     
     // 重置线性植树
     linearTrees = [
