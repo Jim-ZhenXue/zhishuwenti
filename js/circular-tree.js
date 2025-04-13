@@ -406,6 +406,11 @@ function toggleCircularDistances() {
         avgDistanceStat.style.visibility = showCircularDistances ? 'visible' : 'hidden';
     }
     
+    // 播放按钮音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('info');
+    }
+    
     renderCircularView();
     console.log('Toggled circular distances:', showCircularDistances);
 }

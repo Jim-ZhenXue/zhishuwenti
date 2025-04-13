@@ -380,6 +380,11 @@ function toggleLinearDistances() {
         avgDistanceStat.style.visibility = showLinearDistances ? 'visible' : 'hidden';
     }
     
+    // 播放按钮音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('info');
+    }
+    
     renderLinearTrees();
     console.log('Toggled linear distances:', showLinearDistances);
 }
