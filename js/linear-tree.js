@@ -165,6 +165,9 @@ function renderLinearTrees() {
             // 左侧空白区域的标签
             const leftLabel = document.createElement('div');
             leftLabel.className = 'distance-label';
+            leftLabel.style.position = 'absolute';
+            // 计算左边界与第一棵树干之间的中点
+            // 树干在SVG中的中心位置是x=15
             leftLabel.style.left = `${(0 + firstTree.position) / 2}%`;
             leftLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(leftLabel);
@@ -173,10 +176,14 @@ function renderLinearTrees() {
             for (let i = 0; i < sortedTrees.length - 1; i++) {
                 const currentTree = sortedTrees[i];
                 const nextTree = sortedTrees[i + 1];
+                // 根据树干位置计算两棵树之间的中点
+                // 树干在SVG中的中心位置是x=15
                 const midPosition = (currentTree.position + nextTree.position) / 2;
                 
                 const distanceLabel = document.createElement('div');
                 distanceLabel.className = 'distance-label';
+                distanceLabel.style.position = 'absolute';
+                // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
                 distanceLabel.textContent = `${avgDistance}米`;
                 
@@ -186,6 +193,9 @@ function renderLinearTrees() {
             // 右侧空白区域的标签
             const rightLabel = document.createElement('div');
             rightLabel.className = 'distance-label';
+            rightLabel.style.position = 'absolute';
+            // 计算最后一棵树干与右边界之间的中点
+            // 树干在SVG中的中心位置是x=15
             rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
             rightLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(rightLabel);
@@ -197,10 +207,14 @@ function renderLinearTrees() {
             for (let i = 0; i < sortedTrees.length - 1; i++) {
                 const currentTree = sortedTrees[i];
                 const nextTree = sortedTrees[i + 1];
+                // 根据树干位置计算两棵树之间的中点
+                // 树干在SVG中的中心位置是x=15
                 const midPosition = (currentTree.position + nextTree.position) / 2;
                 
                 const distanceLabel = document.createElement('div');
                 distanceLabel.className = 'distance-label';
+                distanceLabel.style.position = 'absolute';
+                // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
                 distanceLabel.textContent = `${avgDistance}米`;
                 
@@ -210,6 +224,9 @@ function renderLinearTrees() {
             // 右侧空白区域的标签
             const rightLabel = document.createElement('div');
             rightLabel.className = 'distance-label';
+            rightLabel.style.position = 'absolute';
+            // 计算最后一棵树干与右边界之间的中点
+            // 树干在SVG中的中心位置是x=15
             rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
             rightLabel.textContent = `${avgDistance}米`;
             linearView.appendChild(rightLabel);
@@ -219,10 +236,14 @@ function renderLinearTrees() {
             for (let i = 0; i < sortedTrees.length - 1; i++) {
                 const currentTree = sortedTrees[i];
                 const nextTree = sortedTrees[i + 1];
+                // 根据树干位置计算两棵树之间的中点
+                // 树干在SVG中的中心位置是x=15
                 const midPosition = (currentTree.position + nextTree.position) / 2;
                 
                 const distanceLabel = document.createElement('div');
                 distanceLabel.className = 'distance-label';
+                distanceLabel.style.position = 'absolute';
+                // 精确定位到两棵树干之间的中点
                 distanceLabel.style.left = `${midPosition}%`;
                 distanceLabel.textContent = `${avgDistance}米`;
                 
