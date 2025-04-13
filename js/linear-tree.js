@@ -237,29 +237,20 @@ function addLinearTree() {
     // 根据不同的种植模式添加树
     const newId = nextLinearTreeId++;
     
-    switch (plantingMode) {
-        case 'both-ends':
-            // 两端种树模式，如果只有两棵树，添加到中间
-            if (linearTrees.length === 2) {
-                linearTrees.push({ id: newId, position: 50 });
-            } else {
-                linearTrees.push({ id: newId, position: 50 });
-            }
-            break;
-        case 'one-end':
-            // 一端种树模式，添加到右侧
-            linearTrees.push({ id: newId, position: 98 });
-            break;
-        case 'no-ends':
-            // 两端不种树模式，添加到中间
-            linearTrees.push({ id: newId, position: 50 });
-            break;
-        default:
-            linearTrees.push({ id: newId, position: 50 });
+    // 只保留两端植树模式
+    if (linearTrees.length === 2) {
+        linearTrees.push({ id: newId, position: 50 });
+    } else {
+        linearTrees.push({ id: newId, position: 50 });
     }
     
     // 重新分配树的位置
     redistributeLinearTrees();
+    
+    // 播放添加树木音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('addTree');
+    }
 }
 
 // 删除线性树
@@ -296,6 +287,11 @@ function removeLinearTree(id) {
     
     if (selectedLinearTree === id) {
         selectedLinearTree = null;
+    }
+    
+    // 播放删除树木音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('removeTree');
     }
 }
 

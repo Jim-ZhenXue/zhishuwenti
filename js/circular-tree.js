@@ -294,6 +294,11 @@ function addCircularTree() {
     const newId = nextCircularTreeId++;
     circularTrees.push({ id: newId, angle: 0 });
     redistributeCircularTrees();
+    
+    // 播放添加树木音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('addTree');
+    }
 }
 
 // 删除环形树
@@ -307,6 +312,11 @@ function removeCircularTree(id) {
     
     if (selectedCircularTree === id) {
         selectedCircularTree = null;
+    }
+    
+    // 播放删除树木音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('removeTree');
     }
 }
 

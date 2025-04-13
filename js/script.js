@@ -71,6 +71,9 @@ function init() {
     toggleLinearDistancesButton.textContent = showLinearDistances ? '隐藏距离' : '显示距离';
     toggleCircularDistancesButton.textContent = showCircularDistances ? '隐藏距离' : '显示距离';
     
+    // 初始化声音图标
+    updateSoundIcon();
+    
     // 设置事件监听器
     setupEventListeners();
 }
@@ -144,7 +147,15 @@ function setupEventListeners() {
 
 // 切换植树类型
 function switchPlantingType(type) {
+    // 如果已经是当前类型，不做任何操作
+    if (plantingType === type) return;
+    
     plantingType = type;
+    
+    // 播放切换标签页音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('switchTab');
+    }
     
     // 更新标签页状态
     linearTab.classList.toggle('active', type === 'linear');
@@ -174,6 +185,11 @@ function handleDistanceChange() {
     // 获取新的总距离值
     totalDistance = parseInt(totalDistanceSlider.value);
     distanceValue.textContent = `${totalDistance}米`;
+    
+    // 播放滑块调整音效
+    if (typeof soundManager !== 'undefined') {
+        soundManager.play('slider');
+    }
     
     // 始终更新统计，无论树的数量或模式
     if (plantingType === 'linear') {
@@ -240,6 +256,9 @@ function resetSimulation() {
     showCircularDistances = true;
     toggleCircularDistancesButton.textContent = '隐藏距离';
     
+    // 播放重置音效
+    soundManager.play('reset');
+    
     // 重新渲染
     renderLinearTrees();
     updateLinearStats();
@@ -274,6 +293,9 @@ function resetLinearTrees() {
 // 显示信息对话框
 function showInfoDialog() {
     infoDialog.classList.add('active');
+    
+    // 播放信息按钮音效
+    soundManager.play('info');
 }
 
 // 隐藏信息对话框
@@ -283,3 +305,26 @@ function hideInfoDialog() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
+
+// 切换声音状态
+function toggleSound() {
+    const muted = soundManager.toggleMute();
+    updateSoundIcon();
+    
+    // 如果刚刚取消静音，播放一个音效作为反馈
+    if (!muted) {
+        soundManager.play('switchTab');
+    }
+}
+
+// 更新声音图标
+function updateSoundIcon() {
+    const soundIcon = document.getElementById('sound-icon');
+    if (soundManager.isMuted()) {
+        // 显示静音图标
+        soundIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+    } else {
+        // 显示有声图标
+        soundIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+    }
+}
