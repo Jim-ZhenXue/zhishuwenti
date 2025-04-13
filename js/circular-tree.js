@@ -404,10 +404,11 @@ function toggleCircularDistances() {
     const button = document.getElementById('toggle-circular-distances');
     button.textContent = showCircularDistances ? '隐藏距离' : '显示距离';
     
-    // 隐藏或显示平均间隔距离统计
+    // 隐藏或显示间隔距离统计
     const avgDistanceStat = document.getElementById('circular-avg-distance').closest('.stat');
     if (avgDistanceStat) {
-        avgDistanceStat.style.display = showCircularDistances ? 'flex' : 'none';
+        // 使用visibility而不是display来隐藏，保持元素占位不变
+        avgDistanceStat.style.visibility = showCircularDistances ? 'visible' : 'hidden';
     }
     
     renderCircularView();

@@ -261,10 +261,11 @@ function toggleLinearDistances() {
     const button = document.getElementById('toggle-linear-distances');
     button.textContent = showLinearDistances ? '隐藏距离' : '显示距离';
     
-    // 隐藏或显示平均间隔距离统计
+    // 隐藏或显示间隔距离统计
     const avgDistanceStat = document.getElementById('linear-avg-distance').closest('.stat');
     if (avgDistanceStat) {
-        avgDistanceStat.style.display = showLinearDistances ? 'flex' : 'none';
+        // 使用visibility而不是display来隐藏，保持元素占位不变
+        avgDistanceStat.style.visibility = showLinearDistances ? 'visible' : 'hidden';
     }
     
     renderLinearTrees();
