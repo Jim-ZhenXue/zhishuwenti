@@ -2,19 +2,49 @@
 
 // 重新分配线性树的位置（等距离模式）
 function redistributeLinearTrees() {
-    if (linearTrees.length <= 2) return;
+    if (linearTrees.length <= 1) return;
     
-    // 保留起点和终点，但确保它们在视图范围内（2%和98%位置）
-    const startTree = { id: linearTrees[0].id, position: 2 };
-    const endTree = { id: linearTrees[linearTrees.length - 1].id, position: 98 };
+    // 根据不同的种植模式处理
+    switch (plantingMode) {
+        case 'both-ends':
+            redistributeBothEnds();
+            break;
+        case 'one-end':
+            redistributeOneEnd();
+            break;
+        case 'no-ends':
+            redistributeNoEnds();
+            break;
+    }
     
-    // 计算中间树的数量和间距（考虑到起点和终点的新位置）
+    // 重新渲染
+    renderLinearTrees();
+    updateLinearStats();
+}
+
+// 两端都种树的情况
+function redistributeBothEnds() {
+    // 如果只有两棵树，直接放在两端
+    if (linearTrees.length === 2) {
+        linearTrees = [
+            { id: linearTrees[0].id, position: 0 },  // 左端点
+            { id: linearTrees[1].id, position: 100 }  // 右端点
+        ];
+        return;
+    } else if (linearTrees.length < 2) {
+        return;
+    }
+    
+    // 保留起点和终点，并将它们放在精确的端点位置（0%和100%）
+    const startTree = { id: linearTrees[0].id, position: 0 };
+    const endTree = { id: linearTrees[linearTrees.length - 1].id, position: 100 };
+    
+    // 计算中间树的数量和间距
     const innerTreeCount = linearTrees.length - 2;
     
     // 确保每个间隔的实际距离相等
-    // 每个间隔应该是总距离除以间隔数
     const intervalCount = linearTrees.length - 1;
-    const equalDistance = totalDistance / intervalCount;
+    const step = 100 / intervalCount;
     
     // 创建新的树数组
     const newTrees = [startTree];
@@ -22,11 +52,7 @@ function redistributeLinearTrees() {
     // 添加中间的树
     for (let i = 0; i < innerTreeCount; i++) {
         const innerTreeId = linearTrees.filter(t => t.id !== startTree.id && t.id !== endTree.id)[i]?.id || (nextLinearTreeId + i);
-        
-        // 根据等距离计算位置
-        // 在视觉上，我们仍然使用2%到98%的范围，但确保每个间隔在计算时是相等的
-        const step = (98 - 2) / intervalCount;
-        newTrees.push({ id: innerTreeId, position: 2 + step * (i + 1) });
+        newTrees.push({ id: innerTreeId, position: step * (i + 1) });
     }
     
     // 添加终点树
@@ -34,10 +60,64 @@ function redistributeLinearTrees() {
     
     // 更新树数组
     linearTrees = newTrees;
+}
+
+// 只在一端种树的情况
+function redistributeOneEnd() {
+    if (linearTrees.length <= 1) return;
     
-    // 重新渲染
-    renderLinearTrees();
-    updateLinearStats();
+    // 保留起点，但确保它在视图范围内（2%位置）
+    const startTree = { id: linearTrees[0].id, position: 2 };
+    
+    // 在一端种树的情况下，间隔数 = 树的数量
+    const intervalCount = linearTrees.length;
+    
+    // 使用从 2% 到 98% 的可见范围
+    const visibleRange = 98 - 2;
+    
+    // 计算每个间隔占的百分比
+    const intervalPercent = visibleRange / intervalCount;
+    
+    // 创建新的树数组
+    const newTrees = [startTree]; // 起点树在 2% 位置
+    
+    // 添加其他树，每棵树的位置应该在每个间隔的结束处
+    const otherTreeCount = linearTrees.length - 1;
+    for (let i = 0; i < otherTreeCount; i++) {
+        const treeId = linearTrees.filter(t => t.id !== startTree.id)[i]?.id || (nextLinearTreeId + i);
+        // 每棵树的位置应该是 (i+1) 个间隔的结束位置
+        // 例如，如果有 3 个间隔，树应该在 2%，35.3% 和 68.6% 的位置
+        newTrees.push({ id: treeId, position: 2 + intervalPercent * (i + 1) });
+    }
+    
+    // 更新树数组
+    linearTrees = newTrees;
+}
+
+// 两端都不种树的情况
+function redistributeNoEnds() {
+    // 计算树的间距
+    const treeCount = linearTrees.length;
+    
+    // 在两端不种树的情况下，间隔数 = 树的数量 + 1
+    const intervalCount = treeCount + 1;
+    
+    // 计算每个间隔占的百分比
+    const intervalPercent = 100 / intervalCount;
+    
+    // 创建新的树数组
+    const newTrees = [];
+    
+    // 添加所有树，每棵树的位置应该在每个间隔的结束处，除了最后一个间隔
+    for (let i = 0; i < treeCount; i++) {
+        const treeId = linearTrees[i]?.id || (nextLinearTreeId + i);
+        // 每棵树的位置应该是 (i+1) 个间隔的结束位置
+        // 例如，如果有 3 个间隔，树应该在 33.3% 和 66.6% 的位置
+        newTrees.push({ id: treeId, position: intervalPercent * (i + 1) });
+    }
+    
+    // 更新树数组
+    linearTrees = newTrees;
 }
 
 // 渲染线性树
@@ -80,11 +160,7 @@ function renderLinearTrees() {
             </svg>
         `;
         
-        // 单独创建树标签元素，确保它位于树的正下方
-        const treeLabel = document.createElement('div');
-        treeLabel.className = 'tree-label';
-        treeLabel.textContent = `树 ${index + 1}`;
-        treeElement.appendChild(treeLabel);
+        // 移除树的编号标签
         
         // 只为非起点终点的树添加删除按钮
         if (tree.id !== 1 && tree.id !== 2) {
@@ -121,61 +197,168 @@ function renderLinearTrees() {
     
     // 渲染距离标签
     if (showLinearDistances) {
-        // Calculate the total percentage span of all trees
+        // 计算树所跨越的百分比范围
         const firstTree = sortedTrees[0];
         const lastTree = sortedTrees[sortedTrees.length - 1];
         const totalSpan = lastTree.position - firstTree.position;
         
-        // Calculate the sum of all distances to ensure it equals totalDistance
-        let totalDistanceSum = 0;
+        // 根据不同的种植模式计算间隔数
+        let intervalCount;
+        switch (plantingMode) {
+            case 'both-ends':
+                // 两端都种树时：间隔数 = 树的数量 - 1
+                intervalCount = Math.max(1, sortedTrees.length - 1);
+                break;
+            case 'one-end':
+                // 只在一端种树时：间隔数 = 树的数量
+                intervalCount = sortedTrees.length;
+                break;
+            case 'no-ends':
+                // 两端都不种树时：间隔数 = 树的数量 + 1
+                intervalCount = sortedTrees.length + 1;
+                break;
+            default:
+                intervalCount = Math.max(1, sortedTrees.length - 1);
+        }
         
-        for (let i = 0; i < sortedTrees.length - 1; i++) {
-            const currentTree = sortedTrees[i];
-            const nextTree = sortedTrees[i + 1];
-            const midPosition = (currentTree.position + nextTree.position) / 2;
+        // 计算每个间隔的实际距离
+        const avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+        
+        // 根据不同的种植模式渲染距离标签
+        if (plantingMode === 'no-ends') {
+            // 两端不种树模式：需要在两端也显示距离标签
             
-            // Calculate distance based on tree positions
-            let distance;
-            if (sortedTrees.length === 2) {
-                // When there are only 2 trees, the distance is exactly equal to the total distance
-                distance = totalDistance;
-            } else {
-                // Always use equal spacing
-                distance = Math.round((totalDistance / (sortedTrees.length - 1)) * 10) / 10;
+            // 左侧空白区域的标签
+            const leftLabel = document.createElement('div');
+            leftLabel.className = 'distance-label';
+            leftLabel.style.left = `${(0 + firstTree.position) / 2}%`;
+            leftLabel.textContent = `${avgDistance}米`;
+            linearView.appendChild(leftLabel);
+            
+            // 树之间的距离标签
+            for (let i = 0; i < sortedTrees.length - 1; i++) {
+                const currentTree = sortedTrees[i];
+                const nextTree = sortedTrees[i + 1];
+                const midPosition = (currentTree.position + nextTree.position) / 2;
+                
+                const distanceLabel = document.createElement('div');
+                distanceLabel.className = 'distance-label';
+                distanceLabel.style.left = `${midPosition}%`;
+                distanceLabel.textContent = `${avgDistance}米`;
+                
+                linearView.appendChild(distanceLabel);
             }
             
-            const distanceLabel = document.createElement('div');
-            distanceLabel.className = 'distance-label';
-            distanceLabel.style.left = `${midPosition}%`;
-            distanceLabel.textContent = `${Math.round(distance * 10) / 10}米`;
+            // 右侧空白区域的标签
+            const rightLabel = document.createElement('div');
+            rightLabel.className = 'distance-label';
+            rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
+            rightLabel.textContent = `${avgDistance}米`;
+            linearView.appendChild(rightLabel);
             
-            linearView.appendChild(distanceLabel);
+        } else if (plantingMode === 'one-end') {
+            // 一端种树模式：需要在右端显示距离标签
+            
+            // 树之间的距离标签
+            for (let i = 0; i < sortedTrees.length - 1; i++) {
+                const currentTree = sortedTrees[i];
+                const nextTree = sortedTrees[i + 1];
+                const midPosition = (currentTree.position + nextTree.position) / 2;
+                
+                const distanceLabel = document.createElement('div');
+                distanceLabel.className = 'distance-label';
+                distanceLabel.style.left = `${midPosition}%`;
+                distanceLabel.textContent = `${avgDistance}米`;
+                
+                linearView.appendChild(distanceLabel);
+            }
+            
+            // 右侧空白区域的标签
+            const rightLabel = document.createElement('div');
+            rightLabel.className = 'distance-label';
+            rightLabel.style.left = `${(lastTree.position + 100) / 2}%`;
+            rightLabel.textContent = `${avgDistance}米`;
+            linearView.appendChild(rightLabel);
+            
+        } else {
+            // 两端种树模式：只显示树之间的距离标签
+            for (let i = 0; i < sortedTrees.length - 1; i++) {
+                const currentTree = sortedTrees[i];
+                const nextTree = sortedTrees[i + 1];
+                const midPosition = (currentTree.position + nextTree.position) / 2;
+                
+                const distanceLabel = document.createElement('div');
+                distanceLabel.className = 'distance-label';
+                distanceLabel.style.left = `${midPosition}%`;
+                distanceLabel.textContent = `${avgDistance}米`;
+                
+                linearView.appendChild(distanceLabel);
+            }
         }
     }
 }
 
 // 添加线性树
 function addLinearTree() {
-    // 添加一棵树并重新分布以保持等距离
+    // 根据不同的种植模式添加树
     const newId = nextLinearTreeId++;
-    linearTrees.push({ id: newId, position: 50 });
+    
+    switch (plantingMode) {
+        case 'both-ends':
+            // 两端种树模式，如果只有两棵树，添加到中间
+            if (linearTrees.length === 2) {
+                linearTrees.push({ id: newId, position: 50 });
+            } else {
+                linearTrees.push({ id: newId, position: 50 });
+            }
+            break;
+        case 'one-end':
+            // 一端种树模式，添加到右侧
+            linearTrees.push({ id: newId, position: 98 });
+            break;
+        case 'no-ends':
+            // 两端不种树模式，添加到中间
+            linearTrees.push({ id: newId, position: 50 });
+            break;
+        default:
+            linearTrees.push({ id: newId, position: 50 });
+    }
+    
+    // 重新分配树的位置
     redistributeLinearTrees();
 }
 
 // 删除线性树
 function removeLinearTree(id) {
-    // 不能删除起点和终点
-    if (id === 1 || id === 2) return;
+    // 根据不同的种植模式处理删除限制
+    switch (plantingMode) {
+        case 'both-ends':
+            // 两端种树模式，不能删除第一棵和最后一棵树
+            if (linearTrees.length <= 2) return; // 至少保留两棵树
+            
+            // 不允许删除第一棵和最后一棵树
+            const firstTreeId = linearTrees[0].id;
+            const lastTreeId = linearTrees[linearTrees.length - 1].id;
+            if (id === firstTreeId || id === lastTreeId) return;
+            break;
+        case 'one-end':
+            // 一端种树模式，不能删除第一棵树
+            if (linearTrees.length <= 1) return; // 至少保留一棵树
+            
+            // 不允许删除第一棵树
+            if (id === linearTrees[0].id) return;
+            break;
+        case 'no-ends':
+            // 两端不种树模式，至少保留一棵树
+            if (linearTrees.length <= 1) return;
+            break;
+    }
     
+    // 删除指定树
     linearTrees = linearTrees.filter(tree => tree.id !== id);
     
-    // 总是重新分配树以保持等距离
-    if (linearTrees.length > 2) {
-        redistributeLinearTrees();
-    } else {
-        renderLinearTrees();
-        updateLinearStats();
-    }
+    // 重新分配树的位置
+    redistributeLinearTrees();
     
     if (selectedLinearTree === id) {
         selectedLinearTree = null;
@@ -275,28 +458,36 @@ function toggleLinearDistances() {
 // 更新线性植树统计
 function updateLinearStats() {
     const treeCount = linearTrees.length;
-    const intervalCount = Math.max(1, treeCount - 1); // 确保至少有一个间隔
+    let intervalCount;
     
-    // Calculate the average distance
-    let avgDistance;
-    if (treeCount === 2) {
-        // When there are exactly 2 trees, the distance is exactly equal to the total distance
-        avgDistance = totalDistance;
-    } else {
-        // For more than 2 trees, the average is the total distance divided by the number of intervals
-        avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
+    // 根据不同的种植模式计算间隔数
+    switch (plantingMode) {
+        case 'both-ends':
+            // 两端都种树时：间隔数 = 树的数量 - 1
+            intervalCount = Math.max(1, treeCount - 1);
+            break;
+        case 'one-end':
+            // 只在一端种树时：间隔数 = 树的数量
+            intervalCount = treeCount;
+            break;
+        case 'no-ends':
+            // 两端都不种树时：间隔数 = 树的数量 + 1
+            intervalCount = treeCount + 1;
+            break;
+        default:
+            intervalCount = Math.max(1, treeCount - 1);
     }
     
-
+    // 计算平均距离
+    const avgDistance = Math.round((totalDistance / intervalCount) * 10) / 10;
     
+    // 更新统计显示
     linearTreeCount.textContent = `${treeCount}棵`;
     linearIntervalCount.textContent = `${intervalCount}个`;
     linearAvgDistance.textContent = `${avgDistance}米`;
     
-
-    
     // 直接更新平均间隔距离的显示
     document.getElementById('linear-avg-distance').textContent = `${avgDistance}米`;
     
-    console.log('Updated linear stats:', { totalDistance, treeCount, intervalCount, avgDistance });
+    console.log('Updated linear stats:', { totalDistance, treeCount, intervalCount, avgDistance, plantingMode });
 }

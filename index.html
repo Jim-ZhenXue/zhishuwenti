@@ -47,6 +47,15 @@
                         隐藏距离
                     </button>
                     
+                    <div class="planting-mode-selector">
+                        <span class="mode-label">种植模式:</span>
+                        <select id="linear-planting-mode" onchange="changePlantingMode(this.value)">
+                            <option value="both-ends">两端植树</option>
+                            <option value="one-end">一端植树</option>
+                            <option value="no-ends">两端不植树</option>
+                        </select>
+                    </div>
+                    
                     <div class="stats">
                         <div class="stat">
                             <span class="stat-label">间隔距离:</span>

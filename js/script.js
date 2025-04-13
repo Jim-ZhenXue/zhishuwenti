@@ -2,6 +2,7 @@
 let plantingType = 'linear'; // 'linear' 或 'circular'
 let totalDistance = 200; // 总距离（米）
 // Equal spacing is now always enabled by default
+let plantingMode = 'both-ends'; // 默认为两端植树模式
 
 // 线性植树变量
 let linearTrees = [
@@ -82,6 +83,11 @@ function setupEventListeners() {
     // 标签页切换
     linearTab.addEventListener('click', () => switchPlantingType('linear'));
     circularTab.addEventListener('click', () => switchPlantingType('circular'));
+    
+    // 种植模式切换
+    document.getElementById('linear-planting-mode').addEventListener('change', function(e) {
+        changePlantingMode(e.target.value);
+    });
     
     // 总距离滑块 - 使用input事件实时更新
     totalDistanceSlider.addEventListener('input', function(e) {
@@ -219,14 +225,12 @@ function resetSimulation() {
     totalDistanceSlider.value = 200;
     distanceValue.textContent = '200米';
     
-
+    // 重置种植模式
+    plantingMode = 'both-ends';
+    document.getElementById('linear-planting-mode').value = 'both-ends';
     
     // 重置线性植树
-    linearTrees = [
-        { id: 1, position: 2 },
-        { id: 2, position: 98 }
-    ];
-    nextLinearTreeId = 3;
+    resetLinearTrees();
     selectedLinearTree = null;
     showLinearDistances = true;
     toggleLinearDistancesButton.textContent = '隐藏距离';
@@ -257,6 +261,44 @@ function redistributeTrees() {
     } else {
         redistributeCircularTrees();
     }
+}
+
+// 切换种植模式
+function changePlantingMode(mode) {
+    plantingMode = mode;
+    resetLinearTrees();
+    console.log('Changed planting mode to:', mode);
+}
+
+// 重置线性植树
+function resetLinearTrees() {
+    switch (plantingMode) {
+        case 'both-ends':
+            // 两端都种树
+            linearTrees = [
+                { id: 1, position: 2 },
+                { id: 2, position: 98 }
+            ];
+            nextLinearTreeId = 3;
+            break;
+        case 'one-end':
+            // 只在起点种树
+            linearTrees = [
+                { id: 1, position: 2 }
+            ];
+            nextLinearTreeId = 2;
+            break;
+        case 'no-ends':
+            // 两端都不种树，初始化一棵树在中间
+            linearTrees = [
+                { id: 1, position: 50 }
+            ];
+            nextLinearTreeId = 2;
+            break;
+    }
+    
+    renderLinearTrees();
+    updateLinearStats();
 }
 
 // 显示信息对话框
