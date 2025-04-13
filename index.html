@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>植树问题模拟</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
+        <!-- 返回按钮 -->
+        <div class="back-button" onclick="wx.miniProgram.navigateBack()">
+            <i class="fas fa-home"></i>
+        </div>
         <header>
             <div class="tabs">
                 <button id="linear-tab" class="tab active" onclick="switchPlantingType('linear')">直线植树</button>
