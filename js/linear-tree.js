@@ -261,10 +261,9 @@ function removeLinearTree(id) {
             // 两端种树模式，不能删除第一棵和最后一棵树
             if (linearTrees.length <= 2) return; // 至少保留两棵树
             
-            // 不允许删除第一棵和最后一棵树
+            // 只保护第一棵树（左端树），允许删除最后一棵树（右端树）
             const firstTreeId = linearTrees[0].id;
-            const lastTreeId = linearTrees[linearTrees.length - 1].id;
-            if (id === firstTreeId || id === lastTreeId) return;
+            if (id === firstTreeId) return;
             break;
         case 'one-end':
             // 一端种树模式，不能删除第一棵树
