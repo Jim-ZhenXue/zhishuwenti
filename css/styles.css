@@ -57,13 +57,13 @@ header {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid #d1d5db;
-    background-color: white;
+    border: 1px solid #555555;
+    background-color: #222222;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #4b5563;
+    color: #dddddd;
 }
 
 .info-button:hover {
@@ -109,11 +109,12 @@ input[type="range"] {
     align-items: center;
     gap: 4px;
     padding: 6px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #555555;
     border-radius: 4px;
-    background-color: white;
+    background-color: #222222;
     font-size: 14px;
     cursor: pointer;
+    color: #dddddd;
 }
 
 .reset-button:hover {
@@ -136,11 +137,11 @@ input[type="range"] {
 
 /* 植树视图容器 */
 .planting-container {
-    background-color: white;
+    background-color: black;
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #333333;
     padding: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
 }
 
 .planting-view {
@@ -182,7 +183,7 @@ input[type="range"] {
     padding: 8px 16px;
     border: 1px solid #10b981;
     border-radius: 4px;
-    background-color: white;
+    background-color: #222222;
     color: #10b981;
     font-weight: 500;
     cursor: pointer;
@@ -279,13 +280,14 @@ input[type="range"] {
     transform: translateX(-50%);
     margin-top: 8px;
     padding: 4px 8px;
-    background-color: white;
+    background-color: #222222;
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
     white-space: nowrap;
+    color: #dddddd;
 }
 
 .tree-delete {
@@ -350,14 +352,15 @@ input[type="range"] {
 
 /* 公式框 */
 .formula-box {
-    background-color: #f0fdf4;
+    background-color: #222222;
     border-radius: 8px;
     padding: 16px;
+    color: #dddddd;
 }
 
 .formula-box h3 {
     margin-bottom: 8px;
-    color: #065f46;
+    color: #10b981;
     font-weight: 500;
 }
 
@@ -368,7 +371,7 @@ input[type="range"] {
 .formula-box li {
     margin-bottom: 4px;
     font-size: 14px;
-    color: #374151;
+    color: #dddddd;
 }
 
 /* 对话框 */
@@ -390,13 +393,14 @@ input[type="range"] {
 }
 
 .dialog-content {
-    background-color: white;
+    background-color: #222222;
     border-radius: 8px;
     width: 90%;
     max-width: 500px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+    color: #dddddd;
 }
 
 .dialog-header {
@@ -442,9 +446,10 @@ input[type="range"] {
 .info-note {
     margin-top: 16px;
     padding: 12px;
-    background-color: #f3f4f6;
+    background-color: #333333;
     border-radius: 4px;
     font-size: 14px;
+    color: #dddddd;
 }
 
 /* 响应式设计 */
