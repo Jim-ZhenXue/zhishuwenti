@@ -31,13 +31,8 @@ function handleCanvasMouseDown(e) {
 
 // 处理画布鼠标移动
 function handleCanvasMouseMove(e) {
-    if (draggingCircularTree !== null && !equalSpacing) {
-        const rect = circularCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        moveCircularTreeToPosition(x, y);
-    }
+    // 禁用拖拽，始终使用等距离模式
+    // 不做任何处理
 }
 
 // 处理画布鼠标松开
@@ -65,14 +60,8 @@ function handleCanvasTouchStart(e) {
 // 处理画布触摸移动
 function handleCanvasTouchMove(e) {
     e.preventDefault();
-    if (draggingCircularTree !== null && !equalSpacing) {
-        const touch = e.touches[0];
-        const rect = circularCanvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY - rect.top;
-        
-        moveCircularTreeToPosition(x, y);
-    }
+    // 禁用拖拽，始终使用等距离模式
+    // 不做任何处理
 }
 
 // 处理画布触摸结束
@@ -104,9 +93,7 @@ function checkCircularTreeClick(x, y) {
         // 如果距离小于20像素，认为点击了树
         if (distance < 20) {
             selectCircularTree(tree.id);
-            if (!equalSpacing) {
-                draggingCircularTree = tree.id;
-            }
+            // 禁用拖拽，始终使用等距离模式
             return;
         }
     }
@@ -114,7 +101,8 @@ function checkCircularTreeClick(x, y) {
 
 // 移动树到指定位置
 function moveCircularTreeToPosition(x, y) {
-    if (draggingCircularTree === null || equalSpacing) return;
+    // 禁用拖拽，始终使用等距离模式
+    return;
     
     const centerX = circularCanvas.width / 2;
     const centerY = circularCanvas.height / 2;
@@ -318,33 +306,10 @@ function renderCircularView() {
 
 // 添加环形树
 function addCircularTree() {
-    if (equalSpacing) {
-        // 等距离模式：添加一棵树并重新分布
-        const newId = nextCircularTreeId++;
-        circularTrees.push({ id: newId, angle: 0 });
-        redistributeCircularTrees();
-    } else {
-        // 非等距离模式：找到最大间隔并在中间添加树
-        let maxGap = 0;
-        let gapAngle = 0;
-        
-        const sortedTrees = [...circularTrees].sort((a, b) => a.angle - b.angle);
-        
-        for (let i = 0; i < sortedTrees.length; i++) {
-            const nextIndex = (i + 1) % sortedTrees.length;
-            let angleDiff = sortedTrees[nextIndex].angle - sortedTrees[i].angle;
-            if (angleDiff < 0) angleDiff += 360;
-            
-            if (angleDiff > maxGap) {
-                maxGap = angleDiff;
-                gapAngle = (sortedTrees[i].angle + angleDiff / 2) % 360;
-            }
-        }
-        
-        circularTrees.push({ id: nextCircularTreeId++, angle: gapAngle });
-        renderCircularView();
-        updateCircularStats();
-    }
+    // 始终使用等距离模式：添加一棵树并重新分布
+    const newId = nextCircularTreeId++;
+    circularTrees.push({ id: newId, angle: 0 });
+    redistributeCircularTrees();
 }
 
 // 删除环形树
@@ -353,12 +318,8 @@ function removeCircularTree(id) {
     
     circularTrees = circularTrees.filter(tree => tree.id !== id);
     
-    if (equalSpacing) {
-        redistributeCircularTrees();
-    } else {
-        renderCircularView();
-        updateCircularStats();
-    }
+    // 始终使用等距离模式
+    redistributeCircularTrees();
     
     if (selectedCircularTree === id) {
         selectedCircularTree = null;
@@ -381,7 +342,8 @@ function selectCircularTree(id) {
 
 // 开始拖拽环形树
 function startDraggingCircularTree(e, id, centerX, centerY) {
-    if (equalSpacing) return;
+    // 禁用拖拽，始终使用等距离模式
+    return;
     
     e.preventDefault();
     
