@@ -4,7 +4,7 @@ const https = require('https');
 const fs = require('fs');
 
 const app = express();
-const port = 8443; // Standard HTTPS port
+const port = 4000; // Standard HTTPS port
 
 // 静态文件服务
 app.use(express.static(path.join(__dirname)));
