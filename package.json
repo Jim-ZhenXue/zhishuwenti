@@ -1,0 +1,12 @@
+{
+  "name": "zhishuwenti",
+  "version": "1.0.0",
+  "description": "A knowledge tree visualization project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
