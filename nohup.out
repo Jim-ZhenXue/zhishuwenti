@@ -1,0 +1,17 @@
+Server error: Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1904:16)
+    at listenInCluster (node:net:1961:12)
+    at Server.listen (node:net:2063:7)
+    at Function.listen (/Users/xz/Desktop/生涯/duoyuanzhinengsiwei/游戏/node_modules/express/lib/application.js:635:24)
+    at Object.<anonymous> (/Users/xz/Desktop/生涯/duoyuanzhinengsiwei/游戏/zhishuwenti/zhishuwenti-server.js:31:20)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10)
+    at Module.load (node:internal/modules/cjs/loader:1288:32)
+    at Module._load (node:internal/modules/cjs/loader:1104:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:174:12) {
+  code: 'EADDRINUSE',
+  errno: -48,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
